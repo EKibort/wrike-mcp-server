@@ -2,8 +2,7 @@ import httpx
 import os
 from bs4 import BeautifulSoup
 import datetime
-import json
-import time
+
 
 WRIKE_API_BASE_URL = 'https://www.wrike.com/api/v4'
 
@@ -156,6 +155,14 @@ async def format_tasks_as_markdown(tasks: list) -> str:
         markdown += await format_task_as_markdown(task)
     return markdown
 
+async def get_all_contacts():
+    async with httpx.AsyncClient() as client:
+        response = await client.get(
+            WRIKE_API_BASE_URL + '/contacts',
+            headers=get_common_headers()
+        )
+        return response.json()['data']
+
 async def get_contacts(ids: list):
     if not ids:
         return []
@@ -225,3 +232,21 @@ async def get_tasks_from_folder(permalink: str):
 
         return response.json()['data']
     
+async def add_comment_to_task(task_id: str, html_text: str):
+    async with httpx.AsyncClient() as client:
+        response = await client.post(
+            WRIKE_API_BASE_URL + '/tasks/'+task_id+'/comments',
+            headers=get_common_headers(),
+            json={'text': html_text}
+        )
+        return response.json()['data'][0]['text']
+    
+
+async def create_task(title: str, description: str, folder_id: str):
+    async with httpx.AsyncClient() as client:
+        response = await client.post(
+            WRIKE_API_BASE_URL + '/folders/'+folder_id+'/tasks',
+            headers=get_common_headers(),
+            json={'title': title, 'description': description}
+        )
+        return response.json()['data'][0]['permalink'] 

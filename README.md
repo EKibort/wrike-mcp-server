@@ -8,6 +8,8 @@ The Wrike MCP (Model Control Protocol) server acts as a bridge between Wrike's p
 - Fetch task details using permalink URLs  
 - Retrieve tasks assigned to the authenticated user  
 - Get tasks from specific folders  
+- Write html comment to Wrike task specifed by given permalink url with @mentions support
+- Create a new Wrike task in the folder specified by the given permalink url.
 
 ## Requirements  
 - Python 3.x  
@@ -20,7 +22,7 @@ The Wrike MCP (Model Control Protocol) server acts as a bridge between Wrike's p
 2. **Create and activate a virtual environment**:  
    ```bash
    # Create a virtual environment
-   python -m venv venv
+   python -m venv .venv
 
    # Activate the virtual environment
    # On macOS and Linux:
@@ -69,6 +71,17 @@ The server provides several MCP tools to interact with Wrike. Here are some exam
    Please summarize all Wrike tasks from the following folder: https://www.wrike.com/open.htm?id=12345678  
    Please exclude any information about prices and budgets in your output.
    ```
+
+4. **Write html comment to Wrike task**:  
+   ```
+   Please write a comment to this Wrike task with Lorem Ipsum text and mention Jhon Doe @https://www.wrike.com/open.htm?id=123456789 
+   ```
+
+5. **Create a new Wrike task in the folder**
+   ```
+   Please create Wrike task in the specified folder @https://www.wrike.com/open.htm?id=123456789  with well formated lorem ipsum text 
+   ```
+
 
 ## License  
 This project is licensed under the MIT License – see the [LICENSE](LICENSE) file for details.
